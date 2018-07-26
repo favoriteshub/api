@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Show = require("../models/Show");
 const asyncMiddleware = require("../utils/asyncMiddleware");
+const config = require("../configuration/search.json");
 
 router.route("/")
 	.get(
@@ -13,6 +14,17 @@ router.route("/")
 			res.json(await Show.create(req.body));
 		})
 	);
+
+   router.route("/:page")
+	.get(
+		asyncMiddleware(async (req, res, next) => {
+      let size = config.pageSize ;
+      let page = req.params.page;
+      var responsFilm = await Show.find().sort({title:1}).skip(size * page ).limit(size);
+      res.json(responsFilm);
+
+		})
+  );
 
 router.route("/:id")
 	.get(
