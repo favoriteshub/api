@@ -1,9 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 let ShowSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   status: {
     type: String,
@@ -21,7 +22,7 @@ let ShowSchema = new mongoose.Schema({
     type: String,
     required: false,
     default: "http://via.placeholder.com/170x250"
-  },
+  }
 });
 
-module.exports = mongoose.model('Show', ShowSchema);
+module.exports = mongoose.model("Show", ShowSchema);
