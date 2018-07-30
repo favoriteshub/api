@@ -38,6 +38,7 @@ app.use((req, res, next) => {
 
 app.use("/api/shows", require("./routes/shows"));
 app.use("/api/users", require("./routes/users"));
+app.use("/api/user-shows", require("./routes/user-shows"));
 
 app.use((error, req, res, next) => {
   res.status(400);
