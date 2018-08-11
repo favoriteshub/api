@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const serverConfig = require("../configuration/server.json");
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const {to, ThrowErr} = require("../services/response");
 
@@ -40,5 +42,12 @@ UserSchema.pre("save", async function() {
   }
   this.password = hash;
 });
+
+UserSchema.methods.getJWT = function() {
+  let token = jwt.sign({user: this._id}, serverConfig.jwt_encryption, {
+    expiresIn: serverConfig.jwt_expiration
+  });
+  return `Bearer ${token}`;
+};
 
 module.exports = mongoose.model("User", UserSchema);

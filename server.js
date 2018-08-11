@@ -17,6 +17,7 @@ app.use(require("cors")());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
+app.use("/api/auth", require("./routes/auth"));
 app.use("/api/shows", require("./routes/shows"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/user-shows", require("./routes/user-shows"));
