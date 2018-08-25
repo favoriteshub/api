@@ -50,4 +50,10 @@ UserSchema.methods.getJWT = function() {
   return `Bearer ${token}`;
 };
 
+UserSchema.methods.comparePassword = async function(password) {
+  let match = await bcrypt.compare(password, this.password);
+
+  return match ? null : "The password does not match.";
+};
+
 module.exports = mongoose.model("User", UserSchema);
