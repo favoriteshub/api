@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const serverConfig = require("./configuration/server.json");
-const bodyParser = require("body-parser");
 
 mongoose.connect(serverConfig.database).then(
   () => console.log("Successfully connected to the database"),
@@ -11,16 +10,22 @@ mongoose.connect(serverConfig.database).then(
 );
 mongoose.Promise = global.Promise;
 
-const app = require("express")();
+const passport = require("passport");
+const {strategy: passportStrategy} = require("./services/passport");
+passport.use(passportStrategy());
 
+const app = require("express")();
+const bodyParser = require("body-parser");
+
+app.use(passport.initialize());
 app.use(require("cors")());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.use("/api/auth", require("./routes/auth"));
-app.use("/api/shows", require("./routes/shows"));
-app.use("/api/users", require("./routes/users"));
-app.use("/api/user-shows", require("./routes/user-shows"));
+app.use("/api/shows", passport.authenticate("jwt", {session: false}), require("./routes/shows"));
+app.use("/api/users", passport.authenticate("jwt", {session: false}), require("./routes/users"));
+app.use("/api/user-shows", passport.authenticate("jwt", {session: false}), require("./routes/user-shows"));
 
 app.use((error, req, res, next) => {
   res.status(400);

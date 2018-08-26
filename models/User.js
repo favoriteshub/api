@@ -44,7 +44,7 @@ UserSchema.pre("save", async function() {
 });
 
 UserSchema.methods.getJWT = function() {
-  let token = jwt.sign({user: this._id}, serverConfig.jwt_encryption, {
+  let token = jwt.sign({userId: this._id}, serverConfig.jwt_encryption, {
     expiresIn: serverConfig.jwt_expiration
   });
   return `Bearer ${token}`;
