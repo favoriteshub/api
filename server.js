@@ -32,4 +32,4 @@ app.use((error, req, res, next) => {
   res.json(error);
 });
 
-app.listen(serverConfig.port, () => console.log("Listening on port 3000"));
+app.listen(serverConfig.port, () => console.log(`Listening on port ${serverConfig.port}`));

@@ -4,39 +4,31 @@ const pe = require("parse-error");
 const awaitTo = async (promise) => {
   let err, res;
   [err, res] = await to(promise);
-  if (err) return [pe(err)];
 
+  if (err) {
+    return [pe(err), null];
+  }
   return [null, res];
 };
 
-const ReErr = function(res, err, code) {
+const resErr = function(res, err, code) {
   if (typeof err == "object" && typeof err.message != "undefined") {
     err = err.message;
   }
 
-  if (typeof code !== "undefined") res.statusCode = code;
-
-  return res.json({success: false, error: err});
-};
-
-const ReSucc = function(res, data, code) {
-  let send_data = {success: true};
-
-  if (typeof data == "object") {
-    send_data = Object.assign(data, send_data); //merge the objects
+  if (typeof code !== "undefined") {
+    res.statusCode = code;
   }
 
-  if (typeof code !== "undefined") res.statusCode = code;
-
-  return res.json(send_data);
+  return res.json({error: err, success: false});
 };
 
-const ThrowErr = function(err_message, log) {
-  if (log === true) {
-    console.error(err_message);
+const resSucc = function(res, data, code) {
+  if (typeof code !== "undefined") {
+    res.statusCode = code;
   }
 
-  throw new Error(err_message);
+  return res.json({...data, success: true});
 };
 
-module.exports = {to: awaitTo, ReErr, ReSucc, ThrowErr};
+module.exports = {to: awaitTo, resErr, resSucc};
