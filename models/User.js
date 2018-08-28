@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const serverConfig = require("../configuration/server.json");
+const envConfig = require("../configuration/env.json");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
@@ -28,12 +28,12 @@ let UserSchema = new mongoose.Schema({
 });
 
 UserSchema.pre("save", async function() {
-  this.password = await bcrypt.hash(this.password, 10);
+  this.password = await bcrypt.hash(this.password, envConfig.salt_rounds);
 });
 
 UserSchema.methods.getJWT = function() {
-  let token = jwt.sign({userId: this._id}, serverConfig.jwt_encryption, {
-    expiresIn: serverConfig.jwt_expiration
+  let token = jwt.sign({userId: this._id}, envConfig.jwt_encryption, {
+    expiresIn: envConfig.jwt_expiration
   });
   return `Bearer ${token}`;
 };

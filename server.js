@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const serverConfig = require("./configuration/server.json");
+const envConfig = require("./configuration/env.json");
 
-mongoose.connect(serverConfig.database).then(
+mongoose.connect(envConfig.db).then(
   () => console.log("Successfully connected to the database"),
   (err) => {
     console.log(err.message);
@@ -32,4 +32,4 @@ app.use((error, req, res, next) => {
   res.json(error);
 });
 
-app.listen(serverConfig.port, () => console.log(`Listening on port ${serverConfig.port}`));
+app.listen(envConfig.port, () => console.log(`Listening on port ${envConfig.port}`));
