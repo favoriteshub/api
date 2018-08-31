@@ -1,7 +1,7 @@
+require("dotenv").config({path: "./.env"});
 const mongoose = require("mongoose");
-const envConfig = require("./configuration/env.json");
 
-mongoose.connect(envConfig.db).then(
+mongoose.connect(process.env.DB).then(
   () => console.log("Successfully connected to the database"),
   (err) => {
     console.log(err.message);
@@ -42,4 +42,4 @@ app.use((error, req, res, next) => {
   res.json(error);
 });
 
-app.listen(envConfig.port, () => console.log(`Listening on port ${envConfig.port}`));
+app.listen(parseInt(process.env.PORT), () => console.log(`Listening on port ${process.env.PORT}`));
