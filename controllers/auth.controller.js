@@ -11,9 +11,9 @@ const createUser = async (req, res) => {
     [err, user] = await to(User.create(req.body));
 
     if (err) {
-      return resErr(res, "User already exists with that username", 422);
+      return resErr(res, "User already exists with that username");
     }
-    return resSucc(res, {user, token: user.getJWT()});
+    return resSucc(res, {username: user.username, email: user.email}, {token: user.getJWT()});
   }
 };
 
@@ -34,9 +34,9 @@ const authUser = async (req, res) => {
   err = await user.comparePassword(req.body.password);
 
   if (err) {
-    return resErr(res, err, 422);
+    return resErr(res, err);
   }
-  return resSucc(res, {user, token: user.getJWT()});
+  return resSucc(res, {username: user.username, email: user.email}, {token: user.getJWT()});
 };
 
 module.exports = {createUser, authUser};
