@@ -8,15 +8,15 @@ let ShowSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    required: true
+    required: false
   },
   last_aired: {
     type: Number,
-    required: true
+    required: false
   },
   last_seen: {
     type: Number,
-    required: true
+    required: false
   },
   poster: {
     type: String,
