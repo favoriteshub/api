@@ -1,35 +1,11 @@
 const router = require("express").Router();
-const User = require("../models/User");
-const asyncMiddleware = require("../utils/asyncMiddleware");
+const userShowsController = require("../controllers/user-shows.controller");
 
-router.route("/:id").get(
-  asyncMiddleware(async (req, res, next) => {
-    res.json(
-      await User.findOne({_id: req.params.id})
-        .select("library.shows -_id")
-        .populate({path: "library.shows", model: "Show"})
-    );
-  })
-);
+router.route("/").get(userShowsController.getAll);
 
 router
-  .route("/:id/:showID")
-  .delete(
-    asyncMiddleware(async (req, res, next) => {
-      res.json(
-        await User.updateOne(
-          {_id: req.params.id},
-          {$pullAll: {"library.shows": [req.params.showID]}}
-        )
-      );
-    })
-  )
-  .put(
-    asyncMiddleware(async (req, res, next) => {
-      res.json(
-        await User.updateOne({_id: req.params.id}, {$push: {"library.shows": req.params.showID}})
-      );
-    })
-  );
+  .route("/:showID")
+  .post(userShowsController.update)
+  .delete(userShowsController.update);
 
 module.exports = router;
