@@ -1,11 +1,11 @@
 const User = require("../models/User");
 const {to, resErr, resSucc} = require("../services/response");
 
-const createUser = async (req, res) => {
+const newUser = async (req, res) => {
   if (!req.body.username) {
-    return resErr(res, "Please enter a username to register.");
+    return resErr(res, "Please enter a username to register");
   } else if (!req.body.password) {
-    return resErr(res, "Please enter a password to register.");
+    return resErr(res, "Please enter a password to register");
   } else {
     let err, user;
     [err, user] = await to(User.create(req.body));
@@ -17,17 +17,17 @@ const createUser = async (req, res) => {
   }
 };
 
-const authUser = async (req, res) => {
+const login = async (req, res) => {
   let err, user;
   if (!req.body.username) {
-    return resErr(res, "Please enter a username to login.");
+    return resErr(res, "Please enter a username to login");
   } else if (!req.body.password) {
-    return resErr(res, "Please enter a password to login.");
+    return resErr(res, "Please enter a password to login");
   } else {
     user = await User.findOne({username: req.body.username});
 
     if (!user) {
-      return resErr(res, "Please enter an existing username.");
+      return resErr(res, "Please enter an existing username");
     }
   }
 
@@ -39,4 +39,4 @@ const authUser = async (req, res) => {
   return resSucc(res, {username: user.username, email: user.email}, {token: user.getJWT()});
 };
 
-module.exports = {createUser, authUser};
+module.exports = {newUser, login};

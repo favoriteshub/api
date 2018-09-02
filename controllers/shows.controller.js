@@ -56,13 +56,13 @@ const getOne = async (req, res) => {
 };
 
 const updateOne = async (req, res) => {
-  let err, updatedShow;
-  [err, updatedShow] = await to(Show.updateOne({_id: req.params.id}, req.body));
+  let err, data;
+  [err, data] = await to(Show.updateOne({_id: req.params.id}, req.body));
 
   if (err) {
     return resErr(res, err);
   }
-  return resSucc(res, updatedShow);
+  return resSucc(res, data);
 };
 
 module.exports = {newShow, searchByTitleCount, searchByTitlePaged, getOne, updateOne};

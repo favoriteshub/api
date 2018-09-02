@@ -1,14 +1,14 @@
 const User = require("../models/User");
 const {to, resErr, resSucc} = require("../services/response");
 
-const deleteUser = async (req, res) => {
-  let user, err;
-  [err, user] = await to(User.deleteOne({_id: req.user._id}));
+const del = async (req, res) => {
+  let err, data;
+  [err, data] = await to(User.deleteOne({_id: req.user._id}));
 
   if (err) {
     return resErr(res, "Could not delete user");
   }
-  return resSucc(res);
+  return resSucc(res, data);
 };
 
-module.exports = {deleteUser};
+module.exports = {del};
