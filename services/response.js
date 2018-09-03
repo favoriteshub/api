@@ -11,11 +11,11 @@ const awaitTo = async (promise) => {
 };
 
 const resErr = function(res, err) {
-  if (typeof err == "object" && typeof err.message != "undefined") {
-    err = err.message;
-  }
-
-  return res.json({error: err, success: false});
+  res.statusCode = 400;
+  return res.json({
+    error: typeof err == "object" && typeof err.message != "undefined" ? err.message : err,
+    success: false
+  });
 };
 
 const resSucc = function(res, data, extra) {
