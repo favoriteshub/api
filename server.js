@@ -37,9 +37,4 @@ app.use("/api/shows", passport.authenticate("jwt", {session: false}), require(".
 app.use("/api/users", passport.authenticate("jwt", {session: false}), require("./routes/users"));
 app.use("/api/user-shows", passport.authenticate("jwt", {session: false}), require("./routes/user-shows"));
 
-app.use((error, req, res, next) => {
-  res.status(400);
-  res.json(error);
-});
-
 app.listen(parseInt(process.env.PORT), () => console.log(`Listening on port ${process.env.PORT}`));
