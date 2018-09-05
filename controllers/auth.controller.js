@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const {to, resErr, resSucc} = require("../services/response");
+const jwt = require("jsonwebtoken");
 
 const newUser = async (req, res) => {
   if (!req.body.username) {
@@ -13,7 +14,11 @@ const newUser = async (req, res) => {
     if (err) {
       return resErr(res, "User already exists with that username");
     }
-    return resSucc(res, {username: user.username, email: user.email}, {token: user.getJWT()});
+    return resSucc(
+      res,
+      {username: user.username, email: user.email},
+      {token: user.getJWT(), refreshToken: user.getJWT(true)}
+    );
   }
 };
 
@@ -36,7 +41,31 @@ const login = async (req, res) => {
   if (err) {
     return resErr(res, err);
   }
-  return resSucc(res, {username: user.username, email: user.email}, {token: user.getJWT()});
+  return resSucc(
+    res,
+    {username: user.username, email: user.email},
+    {token: user.getJWT(), refreshToken: user.getJWT(true)}
+  );
 };
 
-module.exports = {newUser, login};
+const refreshToken = async (req, res) => {
+  let oldToken = jwt.decode(req.body.token);
+
+  jwt.verify(req.body.refreshToken, process.env.REFRESH_JWT_ENCRYPTION, async (err, decoded) => {
+    if (err) {
+      return resErr(res, err);
+    } else if (oldToken.iat === decoded.iat) {
+      let err, user;
+      [err, user] = await to(User.findById(decoded.userId));
+
+      if (err) {
+        return resErr(res, err);
+      }
+      return resSucc(res, undefined, {token: user.getJWT(), refreshToken: user.getJWT(true)});
+    } else {
+      return resErr(res, err);
+    }
+  });
+};
+
+module.exports = {newUser, login, refreshToken};
