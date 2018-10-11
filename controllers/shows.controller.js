@@ -18,7 +18,7 @@ const newShow = async (req, res) => {
 
 const searchByTitleCount = async (req, res) => {
   let err, count;
-  [err, count] = await to(Show.count({title: {$regex: req.params.title, $options: "i"}}));
+  [err, count] = await to(Show.count({title: {$regex: req.query.title, $options: "i"}}));
 
   if (err) {
     return resErr(res, err);
@@ -33,7 +33,7 @@ const searchByTitlePaged = async (req, res) => {
   let elementsPerPage = searchConfig.elementsPerPage;
   let err, shows;
   [err, shows] = await to(
-    Show.find({title: {$regex: req.params.title, $options: "i"}})
+    Show.find({title: {$regex: req.query.title, $options: "i"}})
       .sort({title: 1})
       .skip(elementsPerPage * req.params.page)
       .limit(elementsPerPage)

@@ -3,8 +3,8 @@ const showsController = require("../controllers/shows.controller");
 
 router.route("/").post(showsController.newShow);
 
-router.route("/search/:title/count").get(showsController.searchByTitleCount);
-router.route("/search/:title/:page(\\d+)").get(showsController.searchByTitlePaged);
+router.route("/search/count").get(showsController.searchByTitleCount);
+router.route("/search/:page(\\d+)").get(showsController.searchByTitlePaged);
 
 router
   .route("/:id")
