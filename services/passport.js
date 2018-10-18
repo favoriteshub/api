@@ -6,7 +6,7 @@ const strategy = () => {
   let opts = {jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), secretOrKey: process.env.JWT_ENCRYPTION};
 
   return new JwtStrategy(opts, function(jwt_payload, done) {
-    User.findOne({_id: jwt_payload.userId}, function(err, user) {
+    User.findById(jwt_payload.userId, function(err, user) {
       if (err) {
         return done(err, false);
       }

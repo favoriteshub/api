@@ -4,7 +4,7 @@ const userShowsController = require("../controllers/user-shows.controller");
 router.route("/").get(userShowsController.getAll);
 
 router
-  .route("/:showID")
+  .route("/:showId")
   .post(userShowsController.update)
   .delete(userShowsController.update);
 

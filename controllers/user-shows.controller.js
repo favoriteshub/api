@@ -16,8 +16,8 @@ const getAll = async (req, res) => {
 };
 
 const update = async (req, res) => {
-  let post = {$push: {"library.shows": req.params.showID}};
-  let del = {$pullAll: {"library.shows": [req.params.showID]}};
+  let post = {$push: {"library.shows": req.params.showId}};
+  let del = {$pullAll: {"library.shows": [req.params.showId]}};
   let err, data;
   [err, data] = await to(User.updateOne({_id: req.user._id}, req.method === "POST" ? post : del));
 
