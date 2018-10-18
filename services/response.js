@@ -13,13 +13,12 @@ const awaitTo = async (promise) => {
 const resErr = function(res, err) {
   res.statusCode = 400;
   return res.json({
-    error: typeof err == "object" && typeof err.message != "undefined" ? err.message : err,
-    success: false
+    error: typeof err == "object" && typeof err.message != "undefined" ? err.message : err
   });
 };
 
-const resSucc = function(res, data, extra) {
-  return res.json({data, ...extra, success: true});
+const resSucc = function(res, data) {
+  return res.json(data);
 };
 
 module.exports = {to: awaitTo, resErr, resSucc};

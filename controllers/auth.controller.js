@@ -14,11 +14,12 @@ const newUser = async (req, res) => {
     if (err) {
       return resErr(res, "User already exists with that username");
     }
-    return resSucc(
-      res,
-      {username: user.username, email: user.email},
-      {token: user.getJWT(), refreshToken: user.getJWT(true)}
-    );
+    return resSucc(res, {
+      username: user.username,
+      email: user.email,
+      token: user.getJWT(),
+      refreshToken: user.getJWT(true)
+    });
   }
 };
 
@@ -41,11 +42,12 @@ const login = async (req, res) => {
   if (err) {
     return resErr(res, err);
   }
-  return resSucc(
-    res,
-    {username: user.username, email: user.email},
-    {token: user.getJWT(), refreshToken: user.getJWT(true)}
-  );
+  return resSucc(res, {
+    username: user.username,
+    email: user.email,
+    token: user.getJWT(),
+    refreshToken: user.getJWT(true)
+  });
 };
 
 const refreshToken = async (req, res) => {
@@ -61,7 +63,7 @@ const refreshToken = async (req, res) => {
       if (err) {
         return resErr(res, err);
       }
-      return resSucc(res, undefined, {token: user.getJWT(), refreshToken: user.getJWT(true)});
+      return resSucc(res, {token: user.getJWT(), refreshToken: user.getJWT(true)});
     } else {
       return resErr(res, err);
     }
