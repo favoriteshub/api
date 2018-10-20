@@ -3,26 +3,35 @@ const mongoose = require("mongoose");
 let ShowSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true,
-    unique: true
+    required: [true, "Please enter a title"]
+  },
+  country: {
+    type: String,
+    required: [true, "Please enter a country"]
   },
   status: {
     type: String,
     required: false
   },
-  last_aired: {
-    type: Number,
-    required: false
-  },
-  last_seen: {
+  seasons: {
     type: Number,
     required: false
   },
   poster: {
     type: String,
-    required: false,
-    default: "http://via.placeholder.com/170x250"
+    required: false
   }
 });
 
-module.exports = mongoose.model("Show", ShowSchema);
+ShowSchema.pre("validate", function(next) {
+  Show.find({title: this.title, country: this.country}, (err, docs) => {
+    if (err || docs.length > 0) {
+      this.invalidate("title", "Show already exists with that title");
+    }
+    next();
+  });
+});
+
+const Show = mongoose.model("Show", ShowSchema);
+
+module.exports = Show;
