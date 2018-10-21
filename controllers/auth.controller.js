@@ -3,28 +3,22 @@ const {to, resErr, resSucc} = require("../services/response");
 const jwt = require("jsonwebtoken");
 
 const newUser = async (req, res) => {
-  if (!req.body.username) {
-    return resErr(res, "Please enter a username to register");
-  } else if (!req.body.password) {
-    return resErr(res, "Please enter a password to register");
-  } else {
-    let err, user;
-    [err, user] = await to(User.create(req.body));
+  const [err, user] = await to(User.create(req.body));
 
-    if (err) {
-      return resErr(res, "User already exists with that username");
-    }
-    return resSucc(res, {
-      username: user.username,
-      email: user.email,
-      token: user.getJWT(),
-      refreshToken: user.getJWT(true)
-    });
+  if (err) {
+    return resErr(res, "User already exists with that username");
   }
+  return resSucc(res, {
+    username: user.username,
+    email: user.email,
+    token: user.getJWT(),
+    refreshToken: user.getJWT(true)
+  });
 };
 
 const login = async (req, res) => {
-  let err, user;
+  let user;
+
   if (!req.body.username) {
     return resErr(res, "Please enter a username to login");
   } else if (!req.body.password) {
@@ -37,7 +31,7 @@ const login = async (req, res) => {
     }
   }
 
-  err = await user.comparePassword(req.body.password);
+  const err = await user.comparePassword(req.body.password);
 
   if (err) {
     return resErr(res, err);
@@ -51,22 +45,18 @@ const login = async (req, res) => {
 };
 
 const refreshToken = async (req, res) => {
-  let oldToken = jwt.decode(req.body.token);
+  const oldToken = jwt.decode(req.body.token);
 
-  jwt.verify(req.body.refreshToken, process.env.REFRESH_JWT_ENCRYPTION, async (err, decoded) => {
-    if (err) {
-      return resErr(res, err);
-    } else if (oldToken.iat === decoded.iat) {
-      let err, user;
-      [err, user] = await to(User.findById(decoded.userId));
+  jwt.verify(req.body.refreshToken, process.env.REFRESH_JWT_ENCRYPTION, async (error, decoded) => {
+    if (decoded && oldToken.iat === decoded.iat) {
+      const [err, user] = await to(User.findById(decoded.userId));
 
       if (err) {
         return resErr(res, err);
       }
       return resSucc(res, {token: user.getJWT(), refreshToken: user.getJWT(true)});
-    } else {
-      return resErr(res, err);
     }
+    return resErr(res, error);
   });
 };
 
