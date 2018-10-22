@@ -9,12 +9,10 @@ const strategy = () => {
     User.findById(jwt_payload.userId, function(err, user) {
       if (err) {
         return done(err, false);
-      }
-      if (user) {
+      } else if (user) {
         return done(null, user);
-      } else {
-        return done(null, false);
       }
+      return done(null, false);
     });
   });
 };

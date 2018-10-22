@@ -44,6 +44,8 @@ const getOne = async (req, res) => {
 
   if (err) {
     return resErr(res, err);
+  } else if (!show) {
+    return resErr(res, "This show does not exist");
   }
   return resSucc(res, show);
 };
