@@ -3,12 +3,12 @@ const searchConfig = require("../configuration/search.json");
 const {to, resErr, resSucc} = require("../services/response");
 
 const newFilm = async (req, res) => {
-  const [err, Film] = await to(Film.create(req.body));
+  const [err, film] = await to(Film.create(req.body));
 
   if (err) {
     return resErr(res, err);
   }
-  return resSucc(res, Film);
+  return resSucc(res, film);
 };
 
 const searchByTitleCount = async (req, res) => {
@@ -26,7 +26,7 @@ const searchByTitleCount = async (req, res) => {
 const searchByTitlePaged = async (req, res) => {
   let elementsPerPage = searchConfig.elementsPerPage;
 
-  const [err, Films] = await to(
+  const [err, film] = await to(
     Film.find({title: {$regex: req.query.title, $options: "i"}})
       .sort({title: 1})
       .skip(elementsPerPage * req.params.page)
@@ -36,18 +36,18 @@ const searchByTitlePaged = async (req, res) => {
   if (err) {
     return resErr(res, err);
   }
-  return resSucc(res, Films);
+  return resSucc(res, film);
 };
 
 const getOne = async (req, res) => {
-  const [err, Film] = await to(Film.findById(req.params.id));
+  const [err, film] = await to(Film.findById(req.params.id));
 
   if (err) {
     return resErr(res, err);
-  } else if (!Film) {
+  } else if (!film) {
     return resErr(res, "This Film does not exist");
   }
-  return resSucc(res, Film);
+  return resSucc(res, film);
 };
 
 const updateOne = async (req, res) => {
