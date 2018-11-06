@@ -4,7 +4,7 @@ const userfilmsController = require("../controllers/user-films.controller");
 router.route("/").get(userfilmsController.getAll);
 
 router
-  .route("/:showId")
+  .route("/:filmId")
   .post(userfilmsController.update)
   .delete(userfilmsController.update);
 
