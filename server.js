@@ -2,11 +2,11 @@ require("dotenv").config({path: "./.env"});
 const mongoose = require("mongoose");
 
 mongoose.connect(process.env.DB).then(
-  () => console.log("Successfully connected to the database"),
-  (err) => {
-    console.log(err.message);
-    process.exit();
-  }
+	() => console.log("Successfully connected to the database"),
+	(err) => {
+		console.log(err.message);
+		process.exit();
+	}
 );
 mongoose.Promise = global.Promise;
 
@@ -25,12 +25,12 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 JsonRefs.resolveRefsAt("./documentation/swagger.json").then(
-  (res) => {
-    app.use("/swagger", swaggerUi.serve, swaggerUi.setup(res.resolved));
-  },
-  (err) => {
-    console.log(err.stack);
-  }
+	(res) => {
+		app.use("/swagger", swaggerUi.serve, swaggerUi.setup(res.resolved));
+	},
+	(err) => {
+		console.log(err.stack);
+	}
 );
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/shows", passport.authenticate("jwt", {session: false}), require("./routes/shows"));

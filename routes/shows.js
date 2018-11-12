@@ -7,8 +7,8 @@ router.route("/search/count").get(showsController.searchByTitleCount);
 router.route("/search/:page(\\d+)").get(showsController.searchByTitlePaged);
 
 router
-  .route("/:id")
-  .get(showsController.getOne)
-  .put(showsController.updateOne);
+	.route("/:id")
+	.get(showsController.getOne)
+	.put(showsController.updateOne);
 
 module.exports = router;
