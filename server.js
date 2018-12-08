@@ -1,5 +1,14 @@
-require("dotenv").config({path: "./.env"});
+const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const express = require("express");
+const passport = require("passport");
+const {strategy: passportStrategy} = require("./services/passport");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const JsonRefs = require("json-refs");
+const swaggerUi = require("swagger-ui-express");
+
+dotenv.config({path: "./.env"});
 
 mongoose.connect(process.env.DB).then(
 	() => console.log("Successfully connected to the database"),
@@ -10,23 +19,18 @@ mongoose.connect(process.env.DB).then(
 );
 mongoose.Promise = global.Promise;
 
-const passport = require("passport");
-const {strategy: passportStrategy} = require("./services/passport");
 passport.use(passportStrategy());
 
-const app = require("express")();
-const bodyParser = require("body-parser");
-const swaggerUi = require("swagger-ui-express");
-const JsonRefs = require("json-refs");
+const app = express();
 
 app.use(passport.initialize());
-app.use(require("cors")());
+app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 JsonRefs.resolveRefsAt("./documentation/swagger.json").then(
-	(res) => {
-		app.use("/swagger", swaggerUi.serve, swaggerUi.setup(res.resolved));
+	(response) => {
+		app.use("/swagger", swaggerUi.serve, swaggerUi.setup(response.resolved));
 	},
 	(err) => {
 		console.log(err.stack);
