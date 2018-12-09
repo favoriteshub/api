@@ -1,14 +1,11 @@
-const dotenv = require("dotenv");
+require("dotenv").config({path: "./.env"});
 const mongoose = require("mongoose");
 const express = require("express");
-const passport = require("passport");
-const {strategy: passportStrategy} = require("./services/passport");
+const passport = require("./services/passport");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const JsonRefs = require("json-refs");
 const swaggerUi = require("swagger-ui-express");
-
-dotenv.config({path: "./.env"});
 
 mongoose.connect(process.env.DB).then(
 	() => console.log("Successfully connected to the database"),
@@ -18,8 +15,6 @@ mongoose.connect(process.env.DB).then(
 	}
 );
 mongoose.Promise = global.Promise;
-
-passport.use(passportStrategy());
 
 const app = express();
 

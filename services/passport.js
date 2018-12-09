@@ -1,9 +1,9 @@
-const JwtStrategy = require("passport-jwt").Strategy;
-const ExtractJwt = require("passport-jwt").ExtractJwt;
+const passport = require("passport");
+const {Strategy: JwtStrategy, ExtractJwt: JwtExtract} = require("passport-jwt");
 const User = require("../models/User");
 
-const strategy = () => {
-	let opts = {jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), secretOrKey: process.env.JWT_ENCRYPTION};
+function strategy() {
+	let opts = {jwtFromRequest: JwtExtract.fromAuthHeaderAsBearerToken(), secretOrKey: process.env.JWT_ENCRYPTION};
 
 	return new JwtStrategy(opts, function(jwt_payload, done) {
 		User.findById(jwt_payload.userId, function(err, user) {
@@ -15,6 +15,8 @@ const strategy = () => {
 			return done(null, false);
 		});
 	});
-};
+}
 
-module.exports = {strategy};
+passport.use(strategy());
+
+module.exports = passport;
