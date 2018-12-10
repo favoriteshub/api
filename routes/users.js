@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const usersController = require("../controllers/users.controller");
+const controller = require("../controllers/users");
 
-router.route("/").delete(usersController.del);
+router.route("/").delete(controller.del);
 
 module.exports = router;

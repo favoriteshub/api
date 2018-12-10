@@ -1,11 +1,11 @@
 const router = require("express").Router();
-const userfilmsController = require("../controllers/user-films.controller");
+const controller = require("../controllers/user-films");
 
-router.route("/").get(userfilmsController.getAll);
+router.route("/").get(controller.getAll);
 
 router
 	.route("/:filmId")
-	.post(userfilmsController.update)
-	.delete(userfilmsController.update);
+	.post(controller.update)
+	.delete(controller.update);
 
 module.exports = router;

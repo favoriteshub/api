@@ -1,14 +1,14 @@
 const router = require("express").Router();
-const filmsController = require("../controllers/films.controller");
+const controller = require("../controllers/films");
 
-router.route("/").post(filmsController.newFilm);
+router.route("/").post(controller.newFilm);
 
-router.route("/search/count").get(filmsController.searchByTitleCount);
-router.route("/search/:page(\\d+)").get(filmsController.searchByTitlePaged);
+router.route("/search/count").get(controller.searchByTitleCount);
+router.route("/search/:page(\\d+)").get(controller.searchByTitlePaged);
 
 router
 	.route("/:id")
-	.get(filmsController.getOne)
-	.put(filmsController.updateOne);
+	.get(controller.getOne)
+	.put(controller.updateOne);
 
 module.exports = router;

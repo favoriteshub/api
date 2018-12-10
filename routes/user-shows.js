@@ -1,11 +1,11 @@
 const router = require("express").Router();
-const userShowsController = require("../controllers/user-shows.controller");
+const controller = require("../controllers/user-shows");
 
-router.route("/").get(userShowsController.getAll);
+router.route("/").get(controller.getAll);
 
 router
 	.route("/:showId")
-	.post(userShowsController.update)
-	.delete(userShowsController.update);
+	.post(controller.update)
+	.delete(controller.update);
 
 module.exports = router;
