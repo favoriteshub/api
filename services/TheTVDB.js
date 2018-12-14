@@ -16,7 +16,7 @@ instance.interceptors.request.use((config) => {
 
 instance.interceptors.response.use(undefined, (error) => {
 	if (error.response && error.response.status === 401 && error.config && !error.config.__isRetryRequest) {
-		return login().then(
+		return getToken().then(
 			(response) => {
 				TOKEN = response.data.token;
 
@@ -29,19 +29,8 @@ instance.interceptors.response.use(undefined, (error) => {
 	return Promise.reject(error);
 });
 
-function login() {
+function getToken() {
 	return instance({method: "post", url: "/login", data: {apikey: process.env.THETVDB_KEY}});
 }
 
-function getToken(res, err) {
-	login().then(
-		(response) => {
-			TOKEN = response.data.token;
-		},
-		(error) => {
-			console.log(error);
-		}
-	);
-}
-
-module.exports = {getToken};
+module.exports = instance;
