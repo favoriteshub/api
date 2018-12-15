@@ -1,6 +1,6 @@
 const {to} = require("await-to-js");
 
-const awaitTo = async (promise) => {
+async function awaitTo(promise) {
 	let err, res;
 	[err, res] = await to(promise);
 
@@ -8,17 +8,17 @@ const awaitTo = async (promise) => {
 		return [err, null];
 	}
 	return [null, res];
-};
+}
 
-const resErr = function(res, err) {
+function resErr(res, err) {
 	res.statusCode = 400;
 	return res.json({
 		error: typeof err == "object" && typeof err.message != "undefined" ? err.message : err
 	});
-};
+}
 
-const resSucc = function(res, data) {
+function resSucc(res, data) {
 	return res.json(data);
-};
+}
 
 module.exports = {to: awaitTo, resErr, resSucc};

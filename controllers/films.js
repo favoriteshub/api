@@ -2,16 +2,16 @@ const Film = require("../models/Film");
 const searchConfig = require("../configuration/search.json");
 const {to, resErr, resSucc} = require("../services/response");
 
-const newFilm = async (req, res) => {
+async function newFilm(req, res) {
 	const [err, film] = await to(Film.create(req.body));
 
 	if (err) {
 		return resErr(res, err);
 	}
 	return resSucc(res, film);
-};
+}
 
-const searchByTitleCount = async (req, res) => {
+async function searchByTitleCount(req, res) {
 	const [err, count] = await to(Film.count({title: {$regex: req.query.title, $options: "i"}}));
 
 	if (err) {
@@ -21,9 +21,9 @@ const searchByTitleCount = async (req, res) => {
 		count,
 		pages: Math.ceil(count / searchConfig.elementsPerPage)
 	});
-};
+}
 
-const searchByTitlePaged = async (req, res) => {
+async function searchByTitlePaged(req, res) {
 	let elementsPerPage = searchConfig.elementsPerPage;
 
 	const [err, film] = await to(
@@ -37,9 +37,9 @@ const searchByTitlePaged = async (req, res) => {
 		return resErr(res, err);
 	}
 	return resSucc(res, film);
-};
+}
 
-const getOne = async (req, res) => {
+async function getOne(req, res) {
 	const [err, film] = await to(Film.findById(req.params.id));
 
 	if (err) {
@@ -48,15 +48,15 @@ const getOne = async (req, res) => {
 		return resErr(res, "This Film does not exist");
 	}
 	return resSucc(res, film);
-};
+}
 
-const updateOne = async (req, res) => {
+async function updateOne(req, res) {
 	const [err, data] = await to(Film.updateOne({_id: req.params.id}, req.body));
 
 	if (err) {
 		return resErr(res, err);
 	}
 	return resSucc(res, data);
-};
+}
 
 module.exports = {newFilm, searchByTitleCount, searchByTitlePaged, getOne, updateOne};

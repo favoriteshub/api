@@ -2,16 +2,16 @@ const Show = require("../models/Show");
 const searchConfig = require("../configuration/search.json");
 const {to, resErr, resSucc} = require("../services/response");
 
-const newShow = async (req, res) => {
+async function newShow(req, res) {
 	const [err, show] = await to(Show.create(req.body));
 
 	if (err) {
 		return resErr(res, err);
 	}
 	return resSucc(res, show);
-};
+}
 
-const searchByTitleCount = async (req, res) => {
+async function searchByTitleCount(req, res) {
 	const [err, count] = await to(Show.count({title: {$regex: req.query.title, $options: "i"}}));
 
 	if (err) {
@@ -21,9 +21,9 @@ const searchByTitleCount = async (req, res) => {
 		count,
 		pages: Math.ceil(count / searchConfig.elementsPerPage)
 	});
-};
+}
 
-const searchByTitlePaged = async (req, res) => {
+async function searchByTitlePaged(req, res) {
 	let elementsPerPage = searchConfig.elementsPerPage;
 
 	const [err, shows] = await to(
@@ -42,9 +42,9 @@ const searchByTitlePaged = async (req, res) => {
 
 		return resSucc(res, returnedShows);
 	}
-};
+}
 
-const getOne = async (req, res) => {
+async function getOne(req, res) {
 	const [err, show] = await to(Show.findById(req.params.id));
 
 	if (err) {
@@ -53,15 +53,15 @@ const getOne = async (req, res) => {
 		return resErr(res, "This show does not exist");
 	}
 	return resSucc(res, show);
-};
+}
 
-const updateOne = async (req, res) => {
+async function updateOne(req, res) {
 	const [err, data] = await to(Show.updateOne({_id: req.params.id}, req.body));
 
 	if (err) {
 		return resErr(res, err);
 	}
 	return resSucc(res, data);
-};
+}
 
 module.exports = {newShow, searchByTitleCount, searchByTitlePaged, getOne, updateOne};

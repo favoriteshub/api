@@ -2,7 +2,7 @@ const User = require("../models/User");
 const {to, resErr, resSucc} = require("../services/response");
 const jwt = require("jsonwebtoken");
 
-const newUser = async (req, res) => {
+async function newUser(req, res) {
 	const [err, user] = await to(User.create(req.body));
 
 	if (err) {
@@ -14,9 +14,9 @@ const newUser = async (req, res) => {
 		token: user.getJWT(),
 		refreshToken: user.getJWT(true)
 	});
-};
+}
 
-const login = async (req, res) => {
+async function login(req, res) {
 	let user;
 
 	if (!req.body.username) {
@@ -42,9 +42,9 @@ const login = async (req, res) => {
 		token: user.getJWT(),
 		refreshToken: user.getJWT(true)
 	});
-};
+}
 
-const refreshToken = async (req, res) => {
+async function refreshToken(req, res) {
 	const oldToken = jwt.decode(req.body.token);
 
 	jwt.verify(req.body.refreshToken, process.env.REFRESH_JWT_ENCRYPTION, async (error, decoded) => {
@@ -58,6 +58,6 @@ const refreshToken = async (req, res) => {
 		}
 		return resErr(res, error);
 	});
-};
+}
 
 module.exports = {newUser, login, refreshToken};

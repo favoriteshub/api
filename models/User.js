@@ -36,8 +36,8 @@ UserSchema.pre("save", async function() {
 });
 
 UserSchema.methods.getJWT = function(refresh = false) {
-	let token = jwt.sign({userId: this._id}, process.env[refresh ? "REFRESH_JWT_ENCRYPTION" : "JWT_ENCRYPTION"], {
-		expiresIn: process.env[refresh ? "REFRESH_JWT_EXPIRATION" : "JWT_EXPIRATION"]
+	let token = jwt.sign({userId: this._id}, process.env[`${refresh ? "REFRESH_" : ""}JWT_ENCRYPTION`], {
+		expiresIn: process.env[`${refresh ? "REFRESH_" : ""}JWT_EXPIRATION`]
 	});
 	return token;
 };
