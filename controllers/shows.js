@@ -1,5 +1,4 @@
 const Show = require("../models/Show");
-const searchConfig = require("../configuration/search.json");
 const {to, resErr, resSucc} = require("../services/response");
 
 async function newShow(req, res) {
@@ -19,18 +18,16 @@ async function searchByTitleCount(req, res) {
 	}
 	return resSucc(res, {
 		count,
-		pages: Math.ceil(count / searchConfig.elementsPerPage)
+		pages: req.query.limit ? Math.ceil(count / req.query.limit) : undefined
 	});
 }
 
 async function searchByTitlePaged(req, res) {
-	let elementsPerPage = searchConfig.elementsPerPage;
-
 	const [err, shows] = await to(
 		Show.find({title: {$regex: req.query.title, $options: "i"}})
 			.sort({title: 1})
-			.skip(elementsPerPage * req.params.page)
-			.limit(elementsPerPage)
+			.skip(req.query.limit * req.query.page)
+			.limit(parseInt(req.query.limit))
 			.lean()
 	);
 
