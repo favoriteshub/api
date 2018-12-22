@@ -26,7 +26,7 @@ async function searchByTitlePaged(req, res) {
 	const [err, film] = await to(
 		Film.find({title: {$regex: req.query.title, $options: "i"}})
 			.sort({title: 1})
-			.skip(req.query.limit * req.params.page)
+			.skip(req.query.limit * req.query.page)
 			.limit(parseInt(req.query.limit))
 	);
 
