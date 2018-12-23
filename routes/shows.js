@@ -1,14 +1,16 @@
 const router = require("express").Router();
-const controller = require("../controllers/shows");
+const showsController = require("../controllers/shows");
+const thetvdbController = require("../controllers/the-tv-db");
 
-router.route("/").post(controller.newShow);
+router.route("/").post(showsController.newShow);
 
-router.route("/search/count").get(controller.searchByTitleCount);
-router.route("/search").get(controller.searchByTitlePaged);
+// router.route("/search/count").get(showsController.searchByTitleCount);
+// router.route("/search").get(showsController.searchByTitlePaged);
+router.route("/search").get(thetvdbController.searchByName);
 
 router
 	.route("/:id")
-	.get(controller.getOne)
-	.put(controller.updateOne);
+	.get(showsController.getOne)
+	.put(showsController.updateOne);
 
 module.exports = router;

@@ -33,4 +33,10 @@ function getToken() {
 	return instance({method: "post", url: "/login", data: {apikey: process.env.THETVDB_KEY}});
 }
 
-module.exports = instance;
+const mediaURL = "https://www.thetvdb.com/banners/";
+
+function searchByName(name) {
+	return instance({method: "get", url: "/search/series", params: {name}});
+}
+
+module.exports = {mediaURL, searchByName};
