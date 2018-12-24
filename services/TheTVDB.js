@@ -39,4 +39,16 @@ function searchByName(name) {
 	return instance({method: "get", url: "/search/series", params: {name}});
 }
 
-module.exports = {mediaURL, searchByName};
+function seriesInfo(id) {
+	return instance({
+		method: "get",
+		url: `/series/${id}/filter`,
+		params: {keys: "id,imdbId,seriesName,banner,status,network,genre,overview"}
+	});
+}
+
+function seriesEpisodes(id) {
+	return instance({method: "get", url: `/series/${id}/episodes`});
+}
+
+module.exports = {mediaURL, searchByName, seriesInfo, seriesEpisodes};
