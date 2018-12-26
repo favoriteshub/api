@@ -33,9 +33,7 @@ JsonRefs.resolveRefsAt("./documentation/swagger.json").then(
 );
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/shows", passport.authenticate("jwt", {session: false}), require("./routes/shows"));
-app.use("/api/films", passport.authenticate("jwt", {session: false}), require("./routes/films"));
 app.use("/api/users", passport.authenticate("jwt", {session: false}), require("./routes/users"));
 app.use("/api/user-shows", passport.authenticate("jwt", {session: false}), require("./routes/user-shows"));
-app.use("/api/user-films", passport.authenticate("jwt", {session: false}), require("./routes/user-films"));
 
 app.listen(parseInt(process.env.PORT), () => console.log(`Listening on port ${process.env.PORT}`));

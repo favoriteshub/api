@@ -21,12 +21,6 @@ let UserSchema = new mongoose.Schema({
 				type: mongoose.Schema.ObjectId,
 				ref: "Show"
 			}
-		],
-		films: [
-			{
-				type: mongoose.Schema.ObjectId,
-				ref: "Film"
-			}
 		]
 	}
 });
