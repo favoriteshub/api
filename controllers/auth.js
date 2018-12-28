@@ -47,17 +47,21 @@ async function login(req, res) {
 async function refreshToken(req, res) {
 	const oldToken = jwt.decode(req.body.token);
 
-	jwt.verify(req.body.refreshToken, process.env.REFRESH_JWT_ENCRYPTION, async (error, decoded) => {
-		if (decoded && oldToken.iat === decoded.iat) {
-			const [err, user] = await to(User.findById(decoded.userId));
+	if (!oldToken) {
+		return resErr(res, "Invalid token");
+	} else {
+		jwt.verify(req.body.refreshToken, process.env.REFRESH_JWT_ENCRYPTION, async (error, decoded) => {
+			if (decoded && oldToken.iat === decoded.iat) {
+				const [err, user] = await to(User.findById(decoded.userId));
 
-			if (err) {
-				return resErr(res, err);
+				if (err) {
+					return resErr(res, err);
+				}
+				return resSucc(res, {token: user.getJWT(), refreshToken: user.getJWT(true)});
 			}
-			return resSucc(res, {token: user.getJWT(), refreshToken: user.getJWT(true)});
-		}
-		return resErr(res, error);
-	});
+			return resErr(res, error);
+		});
+	}
 }
 
 module.exports = {newUser, login, refreshToken};
