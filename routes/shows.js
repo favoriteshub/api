@@ -9,8 +9,8 @@ router.route("/").post(showsController.newShow);
 
 router.route("/search").get(thetvdbController.searchByName);
 
-router.route("/:id/info").get(thetvdbController.seriesInfo);
-router.route("/:id/episodes").get(thetvdbController.seriesEpisodes);
+router.route("/:id").get(thetvdbController.seriesInfo);
+router.route("/:id/seasons/:season").get(thetvdbController.seriesSeason);
 
 router
 	.route("/:id")

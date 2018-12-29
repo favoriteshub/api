@@ -55,8 +55,16 @@ function seriesInfo(id) {
 	});
 }
 
-function seriesEpisodes(id) {
-	return instance({method: "get", url: `/series/${id}/episodes`});
+function seriesEpisodesInfo(id) {
+	return instance({method: "get", url: `/series/${id}/episodes/summary`});
 }
 
-module.exports = {getImageURL, searchByName, seriesInfo, seriesEpisodes};
+function seriesPosters(id) {
+	return instance({method: "get", url: `/series/${id}/images/query`, params: {keyType: "poster"}});
+}
+
+function seriesSeason(id, season) {
+	return instance({method: "get", url: `/series/${id}/episodes/query`, params: {airedSeason: season}});
+}
+
+module.exports = {getImageURL, searchByName, seriesInfo, seriesEpisodesInfo, seriesPosters, seriesSeason};
