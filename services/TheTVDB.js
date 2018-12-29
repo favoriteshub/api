@@ -33,7 +33,15 @@ function getToken() {
 	return instance({method: "post", url: "/login", data: {apikey: process.env.THETVDB_KEY}});
 }
 
-const mediaURL = "https://www.thetvdb.com/banners/";
+function getImageURL(url, type) {
+	const baseURL = "https://www.thetvdb.com/banners/";
+	const placeholders = {
+		banner: "http://via.placeholder.com/758x140",
+		poster: "http://via.placeholder.com/680x1000"
+	};
+
+	return url ? baseURL + url : placeholders[type];
+}
 
 function searchByName(name) {
 	return instance({method: "get", url: "/search/series", params: {name}});
@@ -51,4 +59,4 @@ function seriesEpisodes(id) {
 	return instance({method: "get", url: `/series/${id}/episodes`});
 }
 
-module.exports = {mediaURL, searchByName, seriesInfo, seriesEpisodes};
+module.exports = {getImageURL, searchByName, seriesInfo, seriesEpisodes};

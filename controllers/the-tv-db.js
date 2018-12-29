@@ -11,7 +11,7 @@ async function searchByName(req, res) {
 		let shows = data.data.data.map((el) => ({
 			id: el.id,
 			title: el.seriesName,
-			banner: TheTVDB.mediaURL + el.banner,
+			banner: TheTVDB.getImageURL(el.banner, "banner"),
 			status: el.status
 		}));
 
@@ -31,7 +31,7 @@ async function seriesInfo(req, res) {
 			thetvdb: info.id,
 			imdb: info.imdbId,
 			title: info.seriesName,
-			banner: TheTVDB.mediaURL + info.banner,
+			banner: TheTVDB.getImageURL(info.banner, "banner"),
 			status: info.status,
 			network: info.network,
 			genre: info.genre,
