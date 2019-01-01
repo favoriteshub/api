@@ -59,17 +59,17 @@ async function seriesSeason(req, res) {
 	if (err) {
 		return resErr(res, err);
 	} else {
-		let episodes = data.data.data;
-
-		return resSucc(
-			res,
-			episodes.map((el) => ({
+		let episodes = sortBy(
+			data.data.data.map((el) => ({
 				aired: el.firstAired,
-				number: el.airedEpisodeNumber,
+				episode: el.airedEpisodeNumber,
 				summary: el.overview,
 				title: el.episodeName
-			}))
+			})),
+			["episode"]
 		);
+
+		return resSucc(res, {season: req.params.season, episodes});
 	}
 }
 
