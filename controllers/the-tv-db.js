@@ -14,8 +14,8 @@ async function searchByName(req, res) {
 			res,
 			shows.map((el) => ({
 				banner: TheTVDB.getImageURL(el.banner, "banner"),
+				id: el.id,
 				status: el.status,
-				thetvdb: el.id,
 				title: el.seriesName
 			}))
 		);
@@ -41,13 +41,14 @@ async function seriesInfo(req, res) {
 		return resSucc(res, {
 			banner: TheTVDB.getImageURL(info.banner, "banner"),
 			genre: info.genre,
+			id: info.id,
 			imdb: info.imdbId,
 			network: info.network,
 			poster: TheTVDB.getImageURL(posters[0].fileName, "poster"),
 			seasons,
 			status: info.status,
 			summary: info.overview,
-			thetvdb: info.id,
+			thetvdb: info.slug,
 			title: info.seriesName
 		});
 	}

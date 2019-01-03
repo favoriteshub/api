@@ -51,7 +51,7 @@ function seriesInfo(id) {
 	return instance({
 		method: "get",
 		url: `/series/${id}/filter`,
-		params: {keys: "id,imdbId,seriesName,banner,status,network,genre,overview"}
+		params: {keys: "id,imdbId,seriesName,banner,status,network,genre,overview,slug"}
 	});
 }
 
