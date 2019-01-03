@@ -40,7 +40,7 @@ async function seriesInfo(req, res) {
 
 		return resSucc(res, {
 			banner: TheTVDB.getImageURL(info.banner, "banner"),
-			genre: info.genre,
+			genre: info.genre.join(", "),
 			id: info.id,
 			imdb: info.imdbId,
 			network: info.network,
