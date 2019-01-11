@@ -9,8 +9,7 @@ async function newUser(req, res) {
 		return resErr(res, "User already exists with that username");
 	}
 	return resSucc(res, {
-		username: user.username,
-		email: user.email,
+		...user.getPublicFields(),
 		token: user.getJWT(),
 		refreshToken: user.getJWT(true)
 	});
@@ -37,8 +36,7 @@ async function login(req, res) {
 		return resErr(res, err);
 	}
 	return resSucc(res, {
-		username: user.username,
-		email: user.email,
+		...user.getPublicFields(),
 		token: user.getJWT(),
 		refreshToken: user.getJWT(true)
 	});

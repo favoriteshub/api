@@ -15,4 +15,12 @@ let ShowSchema = new mongoose.Schema({
 	}
 });
 
+ShowSchema.methods.getPublicFields = function() {
+	return {
+		title: this.title,
+		id: this.id,
+		poster: this.poster
+	};
+};
+
 module.exports = mongoose.model("Show", ShowSchema);

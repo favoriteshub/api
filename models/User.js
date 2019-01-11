@@ -29,6 +29,13 @@ UserSchema.pre("save", async function() {
 	this.password = await bcrypt.hash(this.password, parseInt(process.env.SALT_ROUNDS));
 });
 
+UserSchema.methods.getPublicFields = function() {
+	return {
+		username: this.username,
+		email: this.email
+	};
+};
+
 UserSchema.methods.getJWT = function(refresh = false) {
 	let token = jwt.sign({userId: this._id}, process.env[`${refresh ? "REFRESH_" : ""}JWT_ENCRYPTION`], {
 		expiresIn: process.env[`${refresh ? "REFRESH_" : ""}JWT_EXPIRATION`]
