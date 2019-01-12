@@ -6,14 +6,14 @@ const {to, resErr, resSucc} = require("../services/response");
 async function getAll(req, res) {
 	const [err, data] = await to(
 		User.findById(req.user._id)
-			.select("library.shows")
-			.populate({path: "library.shows", model: "Show"})
+			.populate({path: "shows_list", select: "-_id -__v", match: {userId: req.user._id}})
+			.lean()
 	);
 
 	if (err) {
 		return resErr(res, err);
 	}
-	return resSucc(res, data.library.shows);
+	return resSucc(res, data.shows_list || []);
 }
 
 async function add(req, res) {
@@ -30,7 +30,12 @@ async function add(req, res) {
 
 	let show = null;
 	[err, show] = await to(
-		Show.create({id: info.id, poster: TheTVDB.getImageURL(posters[0].fileName, "poster"), title: info.seriesName})
+		Show.create({
+			title: info.seriesName,
+			id: info.id,
+			poster: TheTVDB.getImageURL(posters[0].fileName, "poster"),
+			userId: req.user._id
+		})
 	);
 
 	if (err) {
@@ -38,21 +43,27 @@ async function add(req, res) {
 	}
 
 	let data = null;
-	[err, data] = await to(User.updateOne({_id: req.user._id}, {$push: {"library.shows": show._id}}));
+	[err, data] = await to(User.updateOne({_id: req.user._id}, {$push: {shows: req.params.id}}));
 
 	if (err) {
 		return resErr(res, err);
 	}
-	return resSucc(res, data);
+	return resSucc(res, show.getPublicFields());
 }
 
 async function del(req, res) {
-	const [err, data] = await to(User.updateOne({_id: req.user._id}, {$pullAll: {"library.shows": [req.params.id]}}));
+	let [err, data] = await to(Show.deleteOne({id: req.params.id, userId: req.user._id}));
 
 	if (err) {
 		return resErr(res, err);
 	}
-	return resSucc(res, data);
+
+	[err, data] = await to(User.updateOne({_id: req.user._id}, {$pullAll: {shows: [req.params.id]}}));
+
+	if (err) {
+		return resErr(res, err);
+	}
+	return resSucc(res);
 }
 
 module.exports = {getAll, add, del};

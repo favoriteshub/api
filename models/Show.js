@@ -12,6 +12,10 @@ let ShowSchema = new mongoose.Schema({
 	poster: {
 		type: String,
 		required: true
+	},
+	userId: {
+		type: mongoose.Schema.ObjectId,
+		required: true
 	}
 });
 
