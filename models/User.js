@@ -16,7 +16,7 @@ let UserSchema = new mongoose.Schema(
 			type: String,
 			required: false
 		},
-		shows: [{type: String}]
+		shows: [{type: Number}]
 	},
 	{toJSON: {virtuals: true}}
 );

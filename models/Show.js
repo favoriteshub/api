@@ -6,14 +6,14 @@ let ShowSchema = new mongoose.Schema({
 		required: true
 	},
 	id: {
-		type: String,
+		type: Number,
 		required: true
 	},
 	poster: {
 		type: String,
 		required: true
 	},
-	userId: {
+	user_id: {
 		type: mongoose.Schema.ObjectId,
 		required: true
 	}

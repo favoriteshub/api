@@ -6,7 +6,7 @@ const {to, resErr, resSucc} = require("../services/response");
 async function getAll(req, res) {
 	const [err, data] = await to(
 		User.findById(req.user._id)
-			.populate({path: "shows_list", select: "-_id -__v", match: {userId: req.user._id}})
+			.populate({path: "shows_list", select: "-_id -__v -user_id", match: {user_id: req.user._id}})
 			.lean()
 	);
 
@@ -34,7 +34,7 @@ async function add(req, res) {
 			title: info.seriesName,
 			id: info.id,
 			poster: TheTVDB.getImageURL(posters[0].fileName, "poster"),
-			userId: req.user._id
+			user_id: req.user._id
 		})
 	);
 
@@ -52,7 +52,7 @@ async function add(req, res) {
 }
 
 async function del(req, res) {
-	let [err, data] = await to(Show.deleteOne({id: req.params.id, userId: req.user._id}));
+	let [err, data] = await to(Show.deleteOne({id: req.params.id, user_id: req.user._id}));
 
 	if (err) {
 		return resErr(res, err);
