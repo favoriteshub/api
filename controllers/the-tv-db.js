@@ -70,7 +70,7 @@ async function seriesSeason(req, res) {
 			["episode"]
 		);
 
-		return resSucc(res, {season: req.params.season, episodes});
+		return resSucc(res, {season: parseInt(req.params.season), episodes});
 	}
 }
 
