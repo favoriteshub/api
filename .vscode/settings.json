@@ -1,0 +1,12 @@
+{
+	"eslint.enable": true,
+	"eslint.run": "onType",
+	"eslint.alwaysShowStatus": true,
+	"eslint.autoFixOnSave": true,
+	"eslint.validate": [
+		{
+			"language": "javascript",
+			"autoFix": true
+		}
+	]
+}
