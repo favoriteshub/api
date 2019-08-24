@@ -1,7 +1,8 @@
 ## Dependencies
 
 - Node.js
-- MongoDB
+- Docker
+- Docker Compose
 
 ## How to run it
 
@@ -9,12 +10,11 @@
 # install dependencies
 npm i
 
-# rename .env.example into .env and change the variables
-
-# run your MongoDB server
+# copy and rename .env.example into .env and change the variables if needed
 
 # for development
-npm run dev
+docker-compose up #terminal 1
+npm run dev #terminal 2
 
 # for production
 npm start
