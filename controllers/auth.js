@@ -2,19 +2,6 @@ const User = require("../models/User");
 const {to, resErr, resSucc} = require("../services/response");
 const jwt = require("jsonwebtoken");
 
-async function newUser(req, res) {
-	const [err, user] = await to(User.create(req.body));
-
-	if (err) {
-		return resErr(res, "User already exists with that username");
-	}
-	return resSucc(res, {
-		...user.getPublicFields(),
-		token: user.getJWT(),
-		refreshToken: user.getJWT(true)
-	});
-}
-
 async function login(req, res) {
 	let user;
 
@@ -62,4 +49,4 @@ async function refreshToken(req, res) {
 	}
 }
 
-module.exports = {newUser, login, refreshToken};
+module.exports = {login, refreshToken};

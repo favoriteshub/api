@@ -1,13 +1,18 @@
 const User = require("../models/User");
 const {to, resErr, resSucc} = require("../services/response");
 
-async function del(req, res) {
-	const [err, data] = await to(User.deleteOne({_id: req.user._id}));
+async function newUser(req, res) {
+	const [err, user] = await to(User.create(req.body));
 
 	if (err) {
-		return resErr(res, "Could not delete user");
+		return resErr(res, "User already exists with that username");
 	}
-	return resSucc(res, data);
+
+	return resSucc(res, {
+		...user.getPublicFields(),
+		token: user.getJWT(),
+		refreshToken: user.getJWT(true)
+	});
 }
 
-module.exports = {del};
+module.exports = {newUser};
