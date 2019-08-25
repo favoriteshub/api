@@ -10,4 +10,5 @@ services:
     ports:
       - "3001:27017"
     volumes:
-      - ./mongo:/docker-entrypoint-initdb.d
+      - ./mongo/dump:/dump
+      - ./mongo/init.sh:/docker-entrypoint-initdb.d/init-mongo.sh
