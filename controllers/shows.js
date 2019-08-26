@@ -55,4 +55,40 @@ const getShowInfo = async (req, res) => {
 	return resSucc(res, show);
 };
 
-module.exports = {getShowInfo};
+const search = async (req, res) => {
+	const {limit = 10, start = 0, title, thetvdb} = req.query;
+
+	let err;
+	let shows;
+
+	if (thetvdb !== "true") {
+		[err, shows] = await to(
+			Show.find({title: {$regex: title, $options: "i"}})
+				.sort({title: 1})
+				.select("_id banner thetvdbId title status")
+				.skip(parseInt(limit) * parseInt(start))
+				.limit(parseInt(limit))
+				.lean()
+		);
+	} else {
+		let data;
+		[err, data] = await to(thetvdbService.searchByName(title));
+
+		if (data) {
+			shows = data.data.data.map((el) => ({
+				banner: thetvdbService.getImageURL(el.banner, "banner"),
+				thetvdbId: el.id,
+				title: el.seriesName,
+				status: el.status
+			}));
+		}
+	}
+
+	if (err) {
+		return resErr(res, err);
+	}
+
+	return resSucc(res, shows);
+};
+
+module.exports = {getShowInfo, search};

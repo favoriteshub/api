@@ -3,7 +3,41 @@ const passport = require("../services/passport");
 const theTVDBController = require("../controllers/the-tv-db");
 const showsController = require("../controllers/shows");
 
-router.get("/search", passport.authenticate("jwt", {session: false}), theTVDBController.searchByName);
+/**
+ * @swagger
+ *
+ * /api/shows/search:
+ *   get:
+ *     tags:
+ *       - shows
+ *     operationId: search
+ *     parameters:
+ *       - in: query
+ *         name: title
+ *         schema:
+ *           type: string
+ *         required: true
+ *         example: sopranos
+ *       - in: query
+ *         name: thetvdb
+ *         description: If the search should be done using the TheTVDB API
+ *         schema:
+ *           type: boolean
+ *           default: false
+ *       - in: query
+ *         name: limit
+ *         description: Maximum number of results
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *       - in: query
+ *         name: start
+ *         description: Page of results to show
+ *         schema:
+ *           type: integer
+ *           default: 0
+ */
+router.get("/search", showsController.search);
 
 /**
  * @swagger
@@ -31,7 +65,7 @@ router.get("/search", passport.authenticate("jwt", {session: false}), theTVDBCon
  *           default: false
  *         example: true
  */
-router.route("/:id").get(showsController.getShowInfo);
+router.get("/:id", showsController.getShowInfo);
 
 router.get("/:id/seasons/:season", passport.authenticate("jwt", {session: false}), theTVDBController.seriesSeason);
 
