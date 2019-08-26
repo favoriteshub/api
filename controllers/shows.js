@@ -1,6 +1,7 @@
 const Show = require("../models/Show");
 const {to, resErr, resSucc} = require("../services/response");
 const thetvdbService = require("../services/TheTVDB");
+const {sortBy, groupBy} = require("lodash");
 
 const getShowInfo = async (req, res) => {
 	const {id} = req.params;
@@ -91,4 +92,35 @@ const search = async (req, res) => {
 	return resSucc(res, shows);
 };
 
-module.exports = {getShowInfo, search};
+const getShowSeasons = async (req, res) => {
+	const {thetvdbId} = req.params;
+
+	const [err, data] = await to(thetvdbService.seriesSeasons(thetvdbId));
+
+	if (err) {
+		return resErr(res, err);
+	}
+
+	const episodes = data.data.data;
+	const seasonsObj = groupBy(episodes, (el) => el.airedSeason);
+	const numberOfSeasons = Object.keys(seasonsObj).length;
+
+	let seasons = [];
+	for (let index = 1; index < numberOfSeasons; index++) {
+		const season = sortBy(
+			seasonsObj[index].map((el) => ({
+				aired: el.firstAired,
+				number: el.airedEpisodeNumber,
+				summary: el.overview,
+				title: el.episodeName
+			})),
+			["episode"]
+		);
+
+		seasons.push(season);
+	}
+
+	return resSucc(res, seasons);
+};
+
+module.exports = {getShowInfo, search, getShowSeasons};

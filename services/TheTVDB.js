@@ -60,8 +60,8 @@ function seriesPosters(id) {
 	return instance({method: "get", url: `/series/${id}/images/query`, params: {keyType: "poster"}});
 }
 
-function seriesSeason(id, season) {
-	return instance({method: "get", url: `/series/${id}/episodes/query`, params: {airedSeason: season}});
+function seriesSeasons(id) {
+	return instance({method: "get", url: `/series/${id}/episodes`});
 }
 
-module.exports = {getImageURL, searchByName, seriesInfo, seriesEpisodesInfo, seriesPosters, seriesSeason};
+module.exports = {getImageURL, searchByName, seriesInfo, seriesEpisodesInfo, seriesPosters, seriesSeasons};

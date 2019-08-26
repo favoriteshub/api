@@ -1,7 +1,5 @@
 const router = require("express").Router();
-const passport = require("../services/passport");
-const theTVDBController = require("../controllers/the-tv-db");
-const showsController = require("../controllers/shows");
+const controller = require("../controllers/shows");
 
 /**
  * @swagger
@@ -37,7 +35,7 @@ const showsController = require("../controllers/shows");
  *           type: integer
  *           default: 0
  */
-router.get("/search", showsController.search);
+router.get("/search", controller.search);
 
 /**
  * @swagger
@@ -65,8 +63,26 @@ router.get("/search", showsController.search);
  *           default: false
  *         example: true
  */
-router.get("/:id", showsController.getShowInfo);
+router.get("/:id", controller.getShowInfo);
 
-router.get("/:id/seasons/:season", passport.authenticate("jwt", {session: false}), theTVDBController.seriesSeason);
+/**
+ * @swagger
+ *
+ * /api/shows/{thetvdbId}/seasons:
+ *   get:
+ *     tags:
+ *       - shows
+ *     summary: Retrieve show episodes divided by season
+ *     operationId: getShowSeasons
+ *     parameters:
+ *       - in: path
+ *         name: thetvdbId
+ *         description: TheTVDB id for the show
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         example: 75299
+ */
+router.get("/:thetvdbId/seasons", controller.getShowSeasons);
 
 module.exports = router;
