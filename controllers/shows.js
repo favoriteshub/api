@@ -1,0 +1,58 @@
+const Show = require("../models/Show");
+const {to, resErr, resSucc} = require("../services/response");
+const thetvdbService = require("../services/TheTVDB");
+
+const getShowInfo = async (req, res) => {
+	const {id} = req.params;
+	const {thetvdb} = req.query;
+
+	let err;
+	let show;
+
+	if (thetvdb !== "true") {
+		[err, show] = await to(Show.findById(id));
+	} else {
+		[err, show] = await to(Show.findOne({thetvdbId: id}));
+
+		if (!err && !show) {
+			let data;
+			[err, data] = await to(thetvdbService.seriesInfo(id));
+
+			if (data) {
+				const info = data.data.data;
+
+				[err, show] = await to(
+					Show.findOne()
+						.sort({_id: -1})
+						.select("id")
+				);
+
+				if (!err) {
+					[err, show] = await to(
+						Show.create({
+							id: show ? show.id + 1 : 1,
+							banner: thetvdbService.getImageURL(info.banner, "banner"),
+							genre: info.genre,
+							imdbId: info.imdbId,
+							network: info.network,
+							status: info.status,
+							summary: info.overview,
+							thetvdbId: info.id,
+							title: info.seriesName,
+							year: parseInt(info.firstAired.substring(0, 4))
+						})
+					);
+				}
+			}
+		}
+	}
+
+	if (err) {
+		return resErr(res, err);
+	} else if (!show) {
+		return resErr(res, "This show does not exist");
+	}
+	return resSucc(res, show);
+};
+
+module.exports = {getShowInfo};

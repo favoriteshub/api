@@ -47,7 +47,7 @@ function searchByName(name) {
 }
 
 function seriesInfo(id, stripped = false) {
-	let keys = stripped ? "id,seriesName" : "id,imdbId,seriesName,banner,status,network,genre,overview,slug";
+	let keys = stripped ? "id,seriesName" : "id,imdbId,seriesName,banner,status,network,genre,overview,slug,firstAired";
 
 	return instance({method: "get", url: `/series/${id}/filter`, params: {keys}});
 }
