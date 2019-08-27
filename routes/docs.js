@@ -41,7 +41,7 @@ module.exports = router;
  *                 type: string
  *           example:
  *             username: test
- *             email: test@test.test.
+ *             email: test@test.test
  *             token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZDY1OTc4NzAxNmYyNzY2YWEwM2I3NjIiLCJpYXQiOjE1NjY5MzkwMTUsImV4cCI6MTU2Njk0MjYxNX0.UxcZm8lJhi9wufaLl5DKGU48G9Y9JQxV8gQNC-LsEQA
  *             refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZDY1OTc4NzAxNmYyNzY2YWEwM2I3NjIiLCJpYXQiOjE1NjY5MzkwMTUsImV4cCI6MTU2NzAyNTQxNX0.iVZytxxlUl-K0MTb_fZV1OYagKVV3GydjDGATWSOwlI
  */
