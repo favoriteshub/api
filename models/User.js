@@ -2,29 +2,26 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-let UserSchema = new mongoose.Schema(
-	{
-		username: {
-			type: String,
-			required: [true, "Please enter a username"]
-		},
-		password: {
-			type: String,
-			required: [true, "Please enter a password"]
-		},
-		email: {
-			type: String,
-			required: false
-		},
-		shows: [{type: Number}]
+let UserSchema = new mongoose.Schema({
+	username: {
+		type: String,
+		required: [true, "Please enter a username"]
 	},
-	{toJSON: {virtuals: true}}
-);
-
-UserSchema.virtual("shows_list", {
-	ref: "Show",
-	localField: "shows",
-	foreignField: "id"
+	password: {
+		type: String,
+		required: [true, "Please enter a password"]
+	},
+	email: {
+		type: String
+	},
+	library: {
+		shows: [
+			{
+				type: mongoose.Schema.ObjectId,
+				ref: "Show"
+			}
+		]
+	}
 });
 
 UserSchema.pre("save", async function() {

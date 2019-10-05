@@ -5,7 +5,7 @@ router.route("/").get(controller.getAll);
 
 router
 	.route("/:id")
-	.post(controller.add)
-	.delete(controller.del);
+	.post(controller.update)
+	.delete(controller.update);
 
 module.exports = router;
