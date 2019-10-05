@@ -11,7 +11,7 @@ async function newUser(req, res) {
 	return resSucc(res, {
 		...user.getPublicFields(),
 		token: user.getJWT(),
-		refreshToken: user.getJWT(true)
+		refreshToken: user.getRefreshJWT()
 	});
 }
 

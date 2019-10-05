@@ -29,16 +29,20 @@ UserSchema.pre("save", async function() {
 });
 
 UserSchema.methods.getPublicFields = function() {
-	return {
-		username: this.username,
-		email: this.email
-	};
+	return {username: this.username, email: this.email};
 };
 
-UserSchema.methods.getJWT = function(refresh = false) {
-	let token = jwt.sign({userId: this._id}, process.env[`${refresh ? "REFRESH_" : ""}JWT_ENCRYPTION`], {
-		expiresIn: process.env[`${refresh ? "REFRESH_" : ""}JWT_EXPIRATION`]
+UserSchema.methods.getJWT = function() {
+	let token = jwt.sign({userId: this._id}, process.env.JWT_ENCRYPTION, {expiresIn: process.env.JWT_EXPIRATION});
+
+	return token;
+};
+
+UserSchema.methods.getRefreshJWT = function() {
+	let token = jwt.sign({userId: this._id}, process.env.REFRESH_JWT_ENCRYPTION, {
+		expiresIn: process.env.REFRESH_JWT_EXPIRATION
 	});
+
 	return token;
 };
 

@@ -4,20 +4,21 @@ const jwt = require("jsonwebtoken");
 
 async function login(req, res) {
 	let user;
+	let err;
 
 	if (!req.body.username) {
 		return resErr(res, "Please enter a username to login");
 	} else if (!req.body.password) {
 		return resErr(res, "Please enter a password to login");
 	} else {
-		user = await User.findOne({username: req.body.username});
+		[err, user] = await to(User.findOne({username: req.body.username}));
 
 		if (!user) {
 			return resErr(res, "Please enter an existing username");
 		}
 	}
 
-	const err = await user.comparePassword(req.body.password);
+	err = await user.comparePassword(req.body.password);
 
 	if (err) {
 		return resErr(res, err);
@@ -25,7 +26,7 @@ async function login(req, res) {
 	return resSucc(res, {
 		...user.getPublicFields(),
 		token: user.getJWT(),
-		refreshToken: user.getJWT(true)
+		refreshToken: user.getRefreshJWT()
 	});
 }
 
@@ -42,7 +43,7 @@ async function refreshToken(req, res) {
 				if (err) {
 					return resErr(res, err);
 				}
-				return resSucc(res, {token: user.getJWT(), refreshToken: user.getJWT(true)});
+				return resSucc(res, {token: user.getJWT(), refreshToken: user.getRefreshJWT()});
 			}
 			return resErr(res, error);
 		});
