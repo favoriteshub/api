@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const controller = require("../controllers/users");
+const passport = require("../services/passport");
 
 /**
  * @swagger
@@ -35,5 +36,11 @@ const controller = require("../controllers/users");
  *         $ref: '#/components/responses/AuthResponse'
  */
 router.route("/").post(controller.newUser);
+
+router.route("/shows").get(passport.authenticate("jwt", {session: false}), controller.getLibraryShows);
+
+router.route("/shows/:id").post(passport.authenticate("jwt", {session: false}), controller.updateLibraryShows);
+
+router.route("/shows/:id").delete(passport.authenticate("jwt", {session: false}), controller.updateLibraryShows);
 
 module.exports = router;
