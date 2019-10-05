@@ -31,7 +31,7 @@ const controller = require("../controllers/auth");
  *       200:
  *         $ref: '#/components/responses/AuthResponse'
  */
-router.route("/login").post(controller.login);
+router.post("/login", controller.login);
 
 /**
  * @swagger
@@ -74,6 +74,6 @@ router.route("/login").post(controller.login);
  *               token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZDY1OTc4NzAxNmYyNzY2YWEwM2I3NjIiLCJpYXQiOjE1NjY5Mzk5NDUsImV4cCI6MTU2Njk0MzU0NX0.xBA3jXl5aKgWwsN2qYGZn-R5HF2YN4w_71f6jvrfmzI
  *               refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZDY1OTc4NzAxNmYyNzY2YWEwM2I3NjIiLCJpYXQiOjE1NjY5Mzk5NDUsImV4cCI6MTU2NzAyNjM0NX0.VZWYtK2f5_kQqusA-FkxxWMpT5p2oQXInixKZDE33os
  */
-router.route("/refresh").post(controller.refreshToken);
+router.post("/refresh", controller.refreshToken);
 
 module.exports = router;

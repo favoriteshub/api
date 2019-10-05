@@ -35,12 +35,12 @@ const passport = require("../services/passport");
  *       200:
  *         $ref: '#/components/responses/AuthResponse'
  */
-router.route("/").post(controller.newUser);
+router.post("/", controller.newUser);
 
-router.route("/shows").get(passport.authenticate("jwt", {session: false}), controller.getLibraryShows);
+router.get("/shows", passport.authenticate("jwt", {session: false}), controller.getLibraryShows);
 
-router.route("/shows/:id").post(passport.authenticate("jwt", {session: false}), controller.updateLibraryShows);
+router.post("/shows/:id", passport.authenticate("jwt", {session: false}), controller.updateLibraryShows);
 
-router.route("/shows/:id").delete(passport.authenticate("jwt", {session: false}), controller.updateLibraryShows);
+router.delete("/shows/:id", passport.authenticate("jwt", {session: false}), controller.updateLibraryShows);
 
 module.exports = router;
