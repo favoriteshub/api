@@ -62,7 +62,7 @@ router.get("/shows", passport.authenticate("jwt", {session: false}), controller.
  *     tags:
  *       - users
  *     summary: Add a show to the user's favorites
- *     operationId: updateLibraryShows
+ *     operationId: addLibraryShow
  *     security:
  *       - BearerToken: []
  *     parameters:
@@ -77,7 +77,7 @@ router.get("/shows", passport.authenticate("jwt", {session: false}), controller.
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
  */
-router.post("/shows/:id", passport.authenticate("jwt", {session: false}), controller.updateLibraryShows);
+router.post("/shows/:id", passport.authenticate("jwt", {session: false}), controller.addLibraryShow);
 
 /**
  * @swagger
@@ -87,7 +87,7 @@ router.post("/shows/:id", passport.authenticate("jwt", {session: false}), contro
  *     tags:
  *       - users
  *     summary: Remove a show from the user's favorites
- *     operationId: updateLibraryShows
+ *     operationId: removeLibraryShow
  *     security:
  *       - BearerToken: []
  *     parameters:
@@ -102,6 +102,6 @@ router.post("/shows/:id", passport.authenticate("jwt", {session: false}), contro
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
  */
-router.delete("/shows/:id", passport.authenticate("jwt", {session: false}), controller.updateLibraryShows);
+router.delete("/shows/:id", passport.authenticate("jwt", {session: false}), controller.removeLibraryShow);
 
 module.exports = router;

@@ -28,11 +28,8 @@ async function getLibraryShows(req, res) {
 	return resSucc(res, data.library.shows);
 }
 
-async function updateLibraryShows(req, res) {
-	let post = {$push: {"library.shows": req.params.id}};
-	let del = {$pullAll: {"library.shows": [req.params.id]}};
-
-	const [err, data] = await to(User.updateOne({_id: req.user._id}, req.method === "POST" ? post : del));
+async function addLibraryShow(req, res) {
+	const [err, data] = await to(User.updateOne({_id: req.user._id}, {$push: {"library.shows": req.params.id}}));
 
 	if (err) {
 		return resErr(res, err);
@@ -40,4 +37,13 @@ async function updateLibraryShows(req, res) {
 	return resSucc(res, data);
 }
 
-module.exports = {newUser, getLibraryShows, updateLibraryShows};
+async function removeLibraryShow(req, res) {
+	const [err, data] = await to(User.updateOne({_id: req.user._id}, {$pullAll: {"library.shows": [req.params.id]}}));
+
+	if (err) {
+		return resErr(res, err);
+	}
+	return resSucc(res, data);
+}
+
+module.exports = {newUser, getLibraryShows, addLibraryShow, removeLibraryShow};
