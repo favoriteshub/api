@@ -8,6 +8,7 @@ const controller = require("../controllers/shows");
  *   get:
  *     tags:
  *       - shows
+ *     summary: Search for a particular show
  *     operationId: search
  *     parameters:
  *       - in: query
