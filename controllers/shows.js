@@ -1,11 +1,11 @@
 const Show = require("../models/Show");
-const {to, resErr, resSucc} = require("../services/response");
+const { to, resErr, resSucc } = require("../services/response");
 const thetvdbService = require("../services/TheTVDB");
-const {sortBy, groupBy} = require("lodash");
+const { sortBy, groupBy } = require("lodash");
 
 const getShowInfo = async (req, res) => {
-	const {id} = req.params;
-	const {thetvdb} = req.query;
+	const { id } = req.params;
+	const { thetvdb } = req.query;
 
 	let err;
 	let show;
@@ -13,7 +13,7 @@ const getShowInfo = async (req, res) => {
 	if (thetvdb !== "true") {
 		[err, show] = await to(Show.findById(id));
 	} else {
-		[err, show] = await to(Show.findOne({thetvdbId: id}));
+		[err, show] = await to(Show.findOne({ thetvdbId: id }));
 
 		if (!err && !show) {
 			let data;
@@ -24,7 +24,7 @@ const getShowInfo = async (req, res) => {
 
 				[err, show] = await to(
 					Show.findOne()
-						.sort({_id: -1})
+						.sort({ _id: -1 })
 						.select("id")
 				);
 
@@ -57,15 +57,15 @@ const getShowInfo = async (req, res) => {
 };
 
 const search = async (req, res) => {
-	const {limit = 10, start = 0, title, thetvdb} = req.query;
+	const { limit = 10, start = 0, title, thetvdb } = req.query;
 
 	let err;
 	let shows;
 
 	if (thetvdb !== "true") {
 		[err, shows] = await to(
-			Show.find({title: {$regex: title, $options: "i"}})
-				.sort({title: 1})
+			Show.find({ title: { $regex: title, $options: "i" } })
+				.sort({ title: 1 })
 				.select("_id banner thetvdbId title status")
 				.skip(parseInt(limit) * parseInt(start))
 				.limit(parseInt(limit))
@@ -93,7 +93,7 @@ const search = async (req, res) => {
 };
 
 const getShowSeasons = async (req, res) => {
-	const {thetvdbId} = req.params;
+	const { thetvdbId } = req.params;
 
 	const [err, data] = await to(thetvdbService.seriesSeasons(thetvdbId));
 
@@ -123,4 +123,4 @@ const getShowSeasons = async (req, res) => {
 	return resSucc(res, seasons);
 };
 
-module.exports = {getShowInfo, search, getShowSeasons};
+module.exports = { getShowInfo, search, getShowSeasons };

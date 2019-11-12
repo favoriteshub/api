@@ -30,7 +30,7 @@ instance.interceptors.response.use(undefined, (error) => {
 });
 
 function getToken() {
-	return instance({method: "post", url: "/login", data: {apikey: process.env.THETVDB_KEY}});
+	return instance({ method: "post", url: "/login", data: { apikey: process.env.THETVDB_KEY } });
 }
 
 const baseURL = "https://www.thetvdb.com/banners/";
@@ -43,25 +43,25 @@ function getImageURL(url, type) {
 }
 
 function searchByName(name) {
-	return instance({method: "get", url: "/search/series", params: {name}});
+	return instance({ method: "get", url: "/search/series", params: { name } });
 }
 
 function seriesInfo(id, stripped = false) {
 	let keys = stripped ? "id,seriesName" : "id,imdbId,seriesName,banner,status,network,genre,overview,slug,firstAired";
 
-	return instance({method: "get", url: `/series/${id}/filter`, params: {keys}});
+	return instance({ method: "get", url: `/series/${id}/filter`, params: { keys } });
 }
 
 function seriesEpisodesInfo(id) {
-	return instance({method: "get", url: `/series/${id}/episodes/summary`});
+	return instance({ method: "get", url: `/series/${id}/episodes/summary` });
 }
 
 function seriesPosters(id) {
-	return instance({method: "get", url: `/series/${id}/images/query`, params: {keyType: "poster"}});
+	return instance({ method: "get", url: `/series/${id}/images/query`, params: { keyType: "poster" } });
 }
 
 function seriesSeasons(id) {
-	return instance({method: "get", url: `/series/${id}/episodes`});
+	return instance({ method: "get", url: `/series/${id}/episodes` });
 }
 
-module.exports = {getImageURL, searchByName, seriesInfo, seriesEpisodesInfo, seriesPosters, seriesSeasons};
+module.exports = { getImageURL, searchByName, seriesInfo, seriesEpisodesInfo, seriesPosters, seriesSeasons };

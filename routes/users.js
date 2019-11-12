@@ -52,7 +52,7 @@ router.post("/", controller.newUser);
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
  */
-router.get("/shows", passport.authenticate("jwt", {session: false}), controller.getLibraryShows);
+router.get("/shows", passport.authenticate("jwt", { session: false }), controller.getLibraryShows);
 
 /**
  * @swagger
@@ -77,7 +77,7 @@ router.get("/shows", passport.authenticate("jwt", {session: false}), controller.
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
  */
-router.post("/shows/:id", passport.authenticate("jwt", {session: false}), controller.addLibraryShow);
+router.post("/shows/:id", passport.authenticate("jwt", { session: false }), controller.addLibraryShow);
 
 /**
  * @swagger
@@ -102,6 +102,6 @@ router.post("/shows/:id", passport.authenticate("jwt", {session: false}), contro
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
  */
-router.delete("/shows/:id", passport.authenticate("jwt", {session: false}), controller.removeLibraryShow);
+router.delete("/shows/:id", passport.authenticate("jwt", { session: false }), controller.removeLibraryShow);
 
 module.exports = router;

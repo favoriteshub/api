@@ -18,7 +18,7 @@ const app = express();
 
 app.use(passport.initialize());
 app.use(cors());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use("/api/auth", require("./routes/auth"));

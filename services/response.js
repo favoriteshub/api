@@ -1,4 +1,4 @@
-const {to} = require("await-to-js");
+const { to } = require("await-to-js");
 
 async function awaitTo(promise) {
 	let err, res;
@@ -21,4 +21,4 @@ function resSucc(res, data) {
 	return res.json(data);
 }
 
-module.exports = {to: awaitTo, resErr, resSucc};
+module.exports = { to: awaitTo, resErr, resSucc };

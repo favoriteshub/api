@@ -1,5 +1,5 @@
 const User = require("../models/User");
-const {to, resErr, resSucc} = require("../services/response");
+const { to, resErr, resSucc } = require("../services/response");
 const jwt = require("jsonwebtoken");
 
 async function login(req, res) {
@@ -11,7 +11,7 @@ async function login(req, res) {
 	} else if (!req.body.password) {
 		return resErr(res, "Please enter a password to login");
 	} else {
-		[err, user] = await to(User.findOne({username: req.body.username}));
+		[err, user] = await to(User.findOne({ username: req.body.username }));
 
 		if (!user) {
 			return resErr(res, "Please enter an existing username");
@@ -43,11 +43,11 @@ async function refreshToken(req, res) {
 				if (err) {
 					return resErr(res, err);
 				}
-				return resSucc(res, {token: user.getJWT(), refreshToken: user.getRefreshJWT()});
+				return resSucc(res, { token: user.getJWT(), refreshToken: user.getRefreshJWT() });
 			}
 			return resErr(res, error);
 		});
 	}
 }
 
-module.exports = {login, refreshToken};
+module.exports = { login, refreshToken };
