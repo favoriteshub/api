@@ -1,5 +1,5 @@
 {
 	"options": {},
-	"indexes": [{"v": 2, "key": {"_id": 1}, "name": "_id_", "ns": "favoriteshub.users"}],
-	"uuid": "e6d606b6ad524ec0a2cacfac476072ce"
+	"indexes": [{ "v": 2, "key": { "_id": 1 }, "name": "_id_", "ns": "favoriteshub.users" }],
+	"uuid": "ff91cc34fbd440d480c8ff46c50efe1a"
 }
