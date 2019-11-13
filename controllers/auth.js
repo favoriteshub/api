@@ -42,7 +42,10 @@ async function refreshToken(req, res) {
 
 				if (err) {
 					return resErr(res, err);
+				} else if (user === null) {
+					return resErr(res, "Invalid token");
 				}
+
 				return resSucc(res, { token: user.getJWT(), refreshToken: user.getRefreshJWT() });
 			}
 			return resErr(res, error);
