@@ -16,11 +16,16 @@ const getShowInfo = async (req, res) => {
 		[err, show] = await to(Show.findOne({ thetvdbId: id }));
 
 		if (!err && !show) {
-			let data;
-			[err, data] = await to(thetvdbService.seriesInfo(id));
+			let infoData;
+			let postersData;
 
-			if (data) {
-				const info = data.data.data;
+			[err, [infoData, postersData]] = await to(
+				Promise.all([thetvdbService.seriesInfo(id), thetvdbService.seriesPosters(id)])
+			);
+
+			if (infoData && postersData) {
+				const info = infoData.data.data;
+				const posters = postersData.data.data;
 
 				[err, show] = await to(
 					Show.findOne()
@@ -36,6 +41,7 @@ const getShowInfo = async (req, res) => {
 							genre: info.genre,
 							imdbId: info.imdbId,
 							network: info.network,
+							poster: thetvdbService.getImageURL(posters[0].fileName, "poster"),
 							status: info.status,
 							summary: info.overview,
 							thetvdbId: info.id,

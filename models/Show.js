@@ -33,6 +33,9 @@ let ShowSchema = new mongoose.Schema({
 	},
 	banner: {
 		type: String
+	},
+	poster: {
+		type: String
 	}
 });
 
