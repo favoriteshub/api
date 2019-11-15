@@ -51,9 +51,7 @@ router.get("/search", controller.search);
  *       - in: path
  *         name: id
  *         schema:
- *           type:
- *             - integer
- *             - string
+ *           type: integer
  *         required: true
  *         example: 74205
  *       - in: query

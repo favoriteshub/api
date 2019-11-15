@@ -11,7 +11,7 @@ const getShowInfo = async (req, res) => {
 	let show;
 
 	if (thetvdb !== "true") {
-		[err, show] = await to(Show.findById(id));
+		[err, show] = await to(Show.findOne({ id }));
 	} else {
 		[err, show] = await to(Show.findOne({ thetvdbId: id }));
 
