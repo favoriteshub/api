@@ -5,7 +5,7 @@ const passport = require("./services/passport");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
-mongoose.connect(process.env.DB).then(
+mongoose.connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true }).then(
 	() => console.log("Successfully connected to the database"),
 	(err) => {
 		console.log(err.message);
