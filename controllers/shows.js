@@ -72,7 +72,7 @@ const search = async (req, res) => {
 		[err, shows] = await to(
 			Show.find({ title: { $regex: title, $options: "i" } })
 				.sort({ title: 1 })
-				.select("_id banner thetvdbId title status")
+				.select("_id id banner title status")
 				.skip(parseInt(limit) * parseInt(start))
 				.limit(parseInt(limit))
 				.lean()
