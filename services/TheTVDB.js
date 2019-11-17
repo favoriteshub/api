@@ -3,7 +3,10 @@ const axios = require("axios");
 let TOKEN = null;
 
 const instance = axios.create({
-	baseURL: `https://api.thetvdb.com`
+	baseURL: `https://api.thetvdb.com`,
+	headers: {
+		Accept: `application/vnd.thetvdb.v${process.env.THETVDB_VERSION}`
+	}
 });
 
 instance.interceptors.request.use((config) => {
