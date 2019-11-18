@@ -68,11 +68,10 @@ router.get("/shows", passport.authenticate("jwt", { session: false }), controlle
  *     parameters:
  *       - in: path
  *         name: id
- *         description: MongoDB _id
  *         schema:
- *           type: string
+ *           type: integer
  *         required: true
- *         example: 5d9888b3a8d63a7642ca9148
+ *         example: 1
  *     responses:
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
@@ -93,11 +92,10 @@ router.post("/shows/:id", passport.authenticate("jwt", { session: false }), cont
  *     parameters:
  *       - in: path
  *         name: id
- *         description: MongoDB _id
  *         schema:
- *           type: string
+ *           type: integer
  *         required: true
- *         example: 5d9888b3a8d63a7642ca9148
+ *         example: 1
  *     responses:
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
