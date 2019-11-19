@@ -107,23 +107,21 @@ const getShowSeasons = async (req, res) => {
 		return resErr(res, err);
 	}
 
-	const episodes = data.data.data;
-	const seasonsObj = groupBy(episodes, (el) => el.airedSeason);
+	const episodes = data.data.data.filter((el) => el.airedSeason > 0);
+	const seasonsObj = groupBy(episodes, "airedSeason");
 	const numberOfSeasons = Object.keys(seasonsObj).length;
 
 	let seasons = [];
-	for (let index = 1; index < numberOfSeasons; index++) {
-		const season = sortBy(
-			seasonsObj[index].map((el) => ({
-				aired: el.firstAired,
-				number: el.airedEpisodeNumber,
-				summary: el.overview,
-				title: el.episodeName
-			})),
-			["episode"]
-		);
+	for (let index = 1; index <= numberOfSeasons; index++) {
+		const mappedEpisodes = seasonsObj[index].map((el) => ({
+			aired: el.firstAired,
+			number: el.airedEpisodeNumber,
+			summary: el.overview,
+			title: el.episodeName
+		}));
+		const sortedEpisodes = sortBy(mappedEpisodes, ["episode"]);
 
-		seasons.push(season);
+		seasons.push({ season: index, episodes: sortedEpisodes });
 	}
 
 	return resSucc(res, seasons);
