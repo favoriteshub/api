@@ -45,6 +45,7 @@ const getShowInfo = async (req, res) => {
 							status: info.status,
 							summary: info.overview,
 							thetvdbId: info.id,
+							thetvdbSlug: info.slug,
 							title: info.seriesName,
 							year: parseInt(info.firstAired.substring(0, 4))
 						})

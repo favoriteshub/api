@@ -9,6 +9,10 @@ let ShowSchema = new mongoose.Schema({
 		type: Number,
 		required: true
 	},
+	thetvdbSlug: {
+		type: String,
+		required: true
+	},
 	imdbId: {
 		type: String
 	},
