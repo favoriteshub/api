@@ -108,7 +108,22 @@ const getShowSeasons = async (req, res) => {
 		return resErr(res, err);
 	}
 
-	const episodes = data.data.data.filter((el) => el.airedSeason > 0);
+	const paginationData = data.data.links;
+	let episodes = data.data.data;
+
+	if (paginationData.last > 1) {
+		for (let index = paginationData.next; index <= paginationData.last; index++) {
+			const [err, data] = await to(thetvdbService.seriesSeasons(thetvdbId, index));
+
+			if (err) {
+				return resErr(res, err);
+			}
+
+			episodes = episodes.concat(data.data.data);
+		}
+	}
+
+	episodes = episodes.filter((el) => el.airedSeason > 0);
 	const seasonsObj = groupBy(episodes, "airedSeason");
 	const numberOfSeasons = Object.keys(seasonsObj).length;
 
