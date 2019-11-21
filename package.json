@@ -11,7 +11,6 @@
 		"format:check": "prettier --check \"**/*.{js,json}\""
 	},
 	"dependencies": {
-		"await-to-js": "^2.0.1",
 		"axios": "^0.18.1",
 		"bcryptjs": "^2.4.3",
 		"body-parser": "^1.18.3",
@@ -22,7 +21,10 @@
 		"lodash": "^4.17.13",
 		"mongoose": "^5.7.5",
 		"passport": "^0.4.0",
-		"passport-jwt": "^4.0.0"
+		"passport-jwt": "^4.0.0",
+		"saslprep": "^1.0.3",
+		"swagger-jsdoc": "^3.4.0",
+		"swagger-ui-express": "^4.0.7"
 	},
 	"devDependencies": {
 		"eslint": "^6.1.0",

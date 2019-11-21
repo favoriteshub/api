@@ -3,7 +3,10 @@ const axios = require("axios");
 let TOKEN = null;
 
 const instance = axios.create({
-	baseURL: `https://api.thetvdb.com`
+	baseURL: `https://api.thetvdb.com`,
+	headers: {
+		Accept: `application/vnd.thetvdb.v${process.env.THETVDB_VERSION}`
+	}
 });
 
 instance.interceptors.request.use((config) => {
@@ -30,7 +33,7 @@ instance.interceptors.response.use(undefined, (error) => {
 });
 
 function getToken() {
-	return instance({method: "post", url: "/login", data: {apikey: process.env.THETVDB_KEY}});
+	return instance({ method: "post", url: "/login", data: { apikey: process.env.THETVDB_KEY } });
 }
 
 const baseURL = "https://www.thetvdb.com/banners/";
@@ -43,25 +46,25 @@ function getImageURL(url, type) {
 }
 
 function searchByName(name) {
-	return instance({method: "get", url: "/search/series", params: {name}});
+	return instance({ method: "get", url: "/search/series", params: { name } });
 }
 
 function seriesInfo(id, stripped = false) {
-	let keys = stripped ? "id,seriesName" : "id,imdbId,seriesName,banner,status,network,genre,overview,slug";
+	let keys = stripped ? "id,seriesName" : "id,imdbId,seriesName,banner,status,network,genre,overview,slug,firstAired";
 
-	return instance({method: "get", url: `/series/${id}/filter`, params: {keys}});
+	return instance({ method: "get", url: `/series/${id}/filter`, params: { keys } });
 }
 
 function seriesEpisodesInfo(id) {
-	return instance({method: "get", url: `/series/${id}/episodes/summary`});
+	return instance({ method: "get", url: `/series/${id}/episodes/summary` });
 }
 
 function seriesPosters(id) {
-	return instance({method: "get", url: `/series/${id}/images/query`, params: {keyType: "poster"}});
+	return instance({ method: "get", url: `/series/${id}/images/query`, params: { keyType: "poster" } });
 }
 
-function seriesSeason(id, season) {
-	return instance({method: "get", url: `/series/${id}/episodes/query`, params: {airedSeason: season}});
+function seriesSeasons(id, page = 1) {
+	return instance({ method: "get", url: `/series/${id}/episodes`, params: { page } });
 }
 
-module.exports = {getImageURL, searchByName, seriesInfo, seriesEpisodesInfo, seriesPosters, seriesSeason};
+module.exports = { getImageURL, searchByName, seriesInfo, seriesEpisodesInfo, seriesPosters, seriesSeasons };

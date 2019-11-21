@@ -1,30 +1,46 @@
 const mongoose = require("mongoose");
 
 let ShowSchema = new mongoose.Schema({
-	title: {
-		type: String,
-		required: true
-	},
 	id: {
 		type: Number,
 		required: true
 	},
-	poster: {
+	thetvdbId: {
+		type: Number,
+		required: true
+	},
+	thetvdbSlug: {
 		type: String,
 		required: true
 	},
-	user_id: {
-		type: mongoose.Schema.ObjectId,
+	imdbId: {
+		type: String
+	},
+	title: {
+		type: String,
 		required: true
+	},
+	year: {
+		type: Number
+	},
+	status: {
+		type: String
+	},
+	summary: {
+		type: String
+	},
+	network: {
+		type: String
+	},
+	genre: {
+		type: [String]
+	},
+	banner: {
+		type: String
+	},
+	poster: {
+		type: String
 	}
 });
-
-ShowSchema.methods.getPublicFields = function() {
-	return {
-		title: this.title,
-		id: this.id,
-		poster: this.poster
-	};
-};
 
 module.exports = mongoose.model("Show", ShowSchema);
